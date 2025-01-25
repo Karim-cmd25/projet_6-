@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const books = require("../models/books");
-const auth = require("auth");
+const auth = require("../middleware/auth");
 const booksCtrl = require("../controllers/books");
 
 // POST : Créer un livre
