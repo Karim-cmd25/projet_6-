@@ -2,6 +2,8 @@ const express = require("express");
 const mongoose = require("mongoose");
 const app = express();
 app.use(express.json());
+const path = require("path");
+
 const userRoutes = require("./routes/user");
 // Importer correctement le modèle Books
 const Books = require("../Backend/models/books");
@@ -71,5 +73,6 @@ app.get("/api/books", (req, res, next) => {
 
 app.use("/api/books", booksRoutes); // Appel du router pour les autres routes de livres
 app.use("/api/auth", userRoutes);
+app.use("/images", express.static(path.join(__dirname, "images")));
 
 module.exports = app;
