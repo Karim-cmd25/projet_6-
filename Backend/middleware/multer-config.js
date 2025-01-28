@@ -1,14 +1,14 @@
 // Middleware qui gère le téléchargement de fichiers dans une app express
 const multer = require("multer");
 const sharp = require("sharp");
-const path = require("path");
 const fs = require("fs");
+const path = require("path");
 
 const MIME_TYPES = {
   "image/jpg": "jpg",
+  "image/webp": "webp",
   "image/jpeg": "jpg",
   "image/png": "png",
-  "image/webp": "webp",
 };
 
 const storage = multer.diskStorage({
@@ -40,37 +40,37 @@ module.exports.resizeImage = (req, res, next) => {
 
   sharp(filePath)
     .resize({
-      width: 206,
-      height: 260,
+      width: 210,
+      height: 270,
       fit: sharp.fit.cover,
       position: sharp.strategy.entropy, // Ajuste pour garder la partie la plus intéressante de l'image
     })
     .toFile(tempFilePath) // Sauvegarde dans un fichier temporaire
     .then(() => {
       // Après redimensionnement, supprime l'image originale
-      fs.unlink(filePath, (err) => {
-        if (err) {
+      fs.unlink(filePath, (erro) => {
+        if (erro) {
           console.error(
             "Erreur lors de la suppression de l'image originale:",
-            err
+            erro
           );
-          return next(err);
+          return next(erro);
         }
         // Renomme le fichier temporaire pour qu'il ait le nom de l'image originale
-        fs.rename(tempFilePath, filePath, (err) => {
-          if (err) {
+        fs.rename(tempFilePath, filePath, (erro) => {
+          if (erro) {
             console.error(
               "Erreur lors du renommage de l'image redimensionnée:",
-              err
+              erro
             );
-            return next(err);
+            return next(erro);
           }
           next();
         });
       });
     })
-    .catch((err) => {
-      console.error("Erreur lors du redimensionnement de l'image:", err);
-      return next(err);
+    .catch((erro) => {
+      console.error("Erreur lors du redimensionnement de l'image:", erro);
+      return next(erro);
     });
 };
