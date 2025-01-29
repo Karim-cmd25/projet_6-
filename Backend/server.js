@@ -1,9 +1,9 @@
 // Importation des modules nécessaires
 const http = require("http"); // Module pour créer un serveur HTTP natif
 const app = require("./app"); // L'application Express que nous avons définie dans app.js
-
+require("dotenv").config(); /** Load environnement variables from .env file to process.env */
 // Fonction qui détermine le port, en vérifiant si c'est un nombre valide
-const calculerPort = (val) => {
+const determinerPort = (val) => {
   const port = parseInt(val, 10); // Convertit la valeur en un nombre entier
 
   if (isNaN(port)) {
@@ -20,12 +20,12 @@ const calculerPort = (val) => {
 // Création du serveur HTTP avec l'application Express
 const server = http.createServer(app);
 
-// On définit le port, soit depuis les variables d'environnement (si spécifié), sinon par défaut à 5000
-const port = calculerPort(process.env.PORT || "5000");
+// On définit le port, soit depuis les variables d'environnement (si spécifié), sinon par défaut à 4000
+const port = determinerPort(process.env.PORT);
 app.set("port", port); // On assigne le port à l'application Express
 
 // Fonction pour gérer les erreurs liées à l'écoute du serveur
-const gererErreurServeur = (erreur) => {
+const gestionnaireErreur = (erreur) => {
   if (erreur.syscall !== "listen") {
     // Si l'erreur n'est pas liée à l'écoute
     throw erreur; // On relance l'erreur
@@ -55,15 +55,15 @@ const gererErreurServeur = (erreur) => {
   }
 };
 
-// On écoute l'événement d'erreur et on appelle la fonction gererErreurServeur
-server.on("error", gererErreurServeur);
+// On écoute l'événement d'erreur et on appelle la fonction gestionnaireErreur
+server.on("error", gestionnaireErreur);
 
 // Quand le serveur commence à écouter, on affiche l'adresse ou le port
 server.on("listening", () => {
   const address = server.address(); // On récupère l'adresse du serveur
   const pointDeConnexion =
     typeof address === "string" ? "pipe " + address : "port " + port; // On prépare le message à afficher
-  console.log(`🟢 Serveur démarré avec succès sur ${pointDeConnexion} 🚀`); // Affiche que le serveur écoute sur l'adresse/port
+  console.log(`Serveur en écoute sur ${pointDeConnexion}, tout fonctionne !`); // Affiche que le serveur écoute sur l'adresse/port
 });
 
 // Le serveur commence à écouter sur le port spécifié

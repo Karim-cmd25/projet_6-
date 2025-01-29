@@ -134,7 +134,7 @@ exports.rateBook = (req, res, next) => {
 
         averageGrades = totalGrade / totalRatings;
 
-        // Arrondi au dixieme méthode average comme demandé scénario
+        // Arrondi au dixieme méthode average comme demandé scénario !!!!!!!!!
         book.averageRating = Math.round(averageGrades * 10) / 10;
 
         // Mise à jour du livre avec la nouvelle note ainsi que la nouvelle moyenne des notes
